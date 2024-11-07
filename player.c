@@ -3,6 +3,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define RED "\033[1;31m"
+#define BLUE "\033[1;34m"
+#define RESET "\033[0m"
+
 extern char grid[3][3];  // Utiliser la grille déclarée dans game.c
 int computerDifficulty = 1;  // Par défaut, on commence avec "Easy"
 
@@ -99,14 +103,27 @@ void computerMove() {
     }
 }
 
-void playerMove (int player) {
+void playerMove(int player) {
     int row, col;
-    printf("Joueur %d, entrez votre mouvement (ligne colonne) : ", player);
+    
+    // Set player color based on symbol (Player 1: X -> RED, Player 2: O -> BLUE)
+    const char* playerColor = (player == 1) ? RED : BLUE;
+
+    // Print the prompt message with the player's color
+    printf("%sJoueur %d %s, entrez votre mouvement (ligne colonne, entre 0 et 2) : ", playerColor, player, RESET);
     scanf("%d %d", &row, &col);
-    while (grid[row][col] != ' ') {
-        printf("Case déjà occupée. Réessayez : ");
+    
+    // Loop until a valid move is provided
+    while (row < 0 || row > 2 || col < 0 || col > 2 || grid[row][col] != ' ') {
+        if (row < 0 || row > 2 || col < 0 || col > 2) {
+            printf(RED "Les coordonnees doivent etre entre 0 et 2. Reessayez : " RESET);
+        } else if (grid[row][col] != ' ') {
+            printf(RED "Case deja occupee. Reessayez : " RESET);
+        }
         scanf("%d %d", &row, &col);
     }
+    
+    // Set the symbol in the grid according to the player
     grid[row][col] = (player == 1) ? 'X' : 'O';
 }
 
