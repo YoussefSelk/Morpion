@@ -1,50 +1,68 @@
 #include "save.h"
+#include "game.h"
 #include <stdio.h>
 
 extern char grid[3][3];  // Utiliser la grille globale
 extern int currentPlayer;
 
 void saveGame() {
-    FILE *file = fopen("savegame.txt", "w");  // Ouvre le fichier en mode écriture
+    if (!gameModified) {
+        printf("Aucun changement depuis le dernier état sauvegardé. Sauvegarde non nécessaire.\n");
+        return;
+    }
+
+    FILE *file = fopen("savegame.txt", "w");
     if (file == NULL) {
         printf("Erreur lors de l'ouverture du fichier pour la sauvegarde.\n");
         return;
     }
-int i,j ;
-    // Sauvegarder la grille de jeu ligne par ligne
+	int i , j;
     for (i = 0; i < 3; i++) {
         for (j = 0; j < 3; j++) {
-            fprintf(file, "%c ", grid[i][j]);  // Sauvegarde chaque case de la grille avec un espace
+            char ch = (grid[i][j] == ' ') ? '-' : grid[i][j];
+            fprintf(file, "%c ", ch);
         }
-        fprintf(file, "\n");  // Retour à la ligne pour chaque ligne de la grille
+        fprintf(file, "\n");
     }
 
-    // Sauvegarder le joueur courant (1 ou 2)
     fprintf(file, "%d", currentPlayer);
-    
-    fclose(file);  // Ferme le fichier
+    fclose(file);
     printf("Jeu sauvegardé !\n");
+    gameModified = 0;  // Réinitialiser après la sauvegarde
 }
+
 
 void loadGame() {
-    FILE *file = fopen("savegame.txt", "r");  // Ouvre le fichier en mode lecture
+    FILE *file = fopen("savegame.txt", "r");
     if (file == NULL) {
-        printf("Erreur lors du chargement. Le fichier n'existe peut-être pas.\n");
+        printf("Erreur lors du chargement : Le fichier n'existe peut-être pas.\n");
         return;
     }
-int i,j;
-    // Charger la grille de jeu ligne par ligne
-    for (i = 0; i < 3; i++) {
+
+    int error = 0;
+    char temp;
+	int i,j;
+
+    for (i = 0; i < 3 && !error; i++) {
         for (j = 0; j < 3; j++) {
-            fscanf(file, " %c", &grid[i][j]);  // Lire chaque case de la grille et la stocker
+            if (fscanf(file, " %c", &temp) != 1) {
+                error = 1;
+                break;
+            }
+            grid[i][j] = temp == '-' ? ' ' : temp;  // Convertir les tirets en espaces
         }
     }
 
-    // Charger le joueur courant
-    fscanf(file, "%d", &currentPlayer);  // Charger le joueur courant (1 ou 2)
-    
-    fclose(file);  // Ferme le fichier
-    printf("Jeu chargé !\n");
+    if (!error && fscanf(file, "%d", &currentPlayer) != 1) {
+        error = 1;
+    }
+
+    fclose(file);
+
+    if (error) {
+        printf("Erreur lors du chargement : Le fichier est corrompu ou mal formé.\n");
+    } else {
+        printf("Jeu chargé avec succès !\n");
+        gameModified = 0;
+    }
 }
-
-

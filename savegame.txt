@@ -1,4 +1,4 @@
-X   O 
-X X   
-X O O 
-1
+X - O 
+- O X 
+O - X 
+2
