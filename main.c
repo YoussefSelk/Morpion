@@ -2,12 +2,7 @@
 #include "menu.h"
 
 int main() {
-    int choix;
-    do {
-        displayMenu();
-        scanf("%d", &choix);
-        handleMenuChoice(choix);
-    } while (choix != 6);
+	runMainMenuLoop();
     return 0;
 }
 

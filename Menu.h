@@ -4,6 +4,8 @@
 void displayMenu();
 int chooseDifficulty();
 void handleMenuChoice(int choice);
-
+void pauseMenu();
+void displayReturnToMainMenu();
+void runMainMenuLoop();
 #endif
 

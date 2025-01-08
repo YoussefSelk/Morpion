@@ -1,6 +1,6 @@
 #include "display.h"
 #include <stdio.h>
-#include <stdlib.h>  // Pour system()
+#include <stdlib.h>  
 
 void clearConsole() {
     #ifdef _WIN32
@@ -30,4 +30,5 @@ void displayGrid(char grid[3][3]) {
     }
     printf("\n");
 }
+
 
