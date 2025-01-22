@@ -5,9 +5,10 @@ Welcome to the **Morpion Game**, a console-based implementation of the classic T
 The game emphasizes customization and user experience, allowing players to personalize the game symbols and their colors. Additionally, the project includes essential features such as saving and loading games, enabling players to continue their progress seamlessly.
 
 ---
+
 # Screenshots
 
-Here are some styled screenshots of the project:
+Here are all the screenshots of the project:
 
 <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
 
@@ -21,8 +22,17 @@ Here are some styled screenshots of the project:
   
   <img src="https://github.com/user-attachments/assets/c8a0027a-c2a4-4843-87ff-3548eb19135f" alt="Screenshot 5" style="width: 300px; border: 2px solid #ddd; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
   
+  <img src="https://github.com/user-attachments/assets/d6fe3b05-cb20-4a2f-96e0-9fbbe9b12a54" alt="Screenshot 6" style="width: 300px; border: 2px solid #ddd; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+  
+  <img src="https://github.com/user-attachments/assets/0c3f3a67-33fc-4be0-b84f-e9be0a3977af" alt="Screenshot 7" style="width: 300px; border: 2px solid #ddd; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+  
+  <img src="https://github.com/user-attachments/assets/122271c6-4dc2-41fa-a714-970d95c12a5a" alt="Screenshot 8" style="width: 300px; border: 2px solid #ddd; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+  
+  <img src="https://github.com/user-attachments/assets/9704d275-ccd8-464f-9414-1da4199c363e" alt="Screenshot 9" style="width: 300px; border: 2px solid #ddd; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+
 </div>
 
+---
 
 ## Table of Contents
 
