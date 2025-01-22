@@ -5,6 +5,19 @@ Welcome to the **Morpion Game**, a console-based implementation of the classic T
 The game emphasizes customization and user experience, allowing players to personalize the game symbols and their colors. Additionally, the project includes essential features such as saving and loading games, enabling players to continue their progress seamlessly.
 
 ---
+# Screenshots
+
+Here are some screenshots of the project in action:
+
+![Image](https://github.com/user-attachments/assets/736734b0-411b-41ad-9f1d-dade7da2ed78)  
+![Image](https://github.com/user-attachments/assets/e994521e-cb16-49a9-a391-a755b9232065)  
+![Image](https://github.com/user-attachments/assets/3244b629-090b-4821-9b17-2198a29cc351)  
+![Image](https://github.com/user-attachments/assets/c850cd4e-15ac-46a0-a142-4b31a55d0af9)  
+![Image](https://github.com/user-attachments/assets/c8a0027a-c2a4-4843-87ff-3548eb19135f)  
+![Image](https://github.com/user-attachments/assets/d6fe3b05-cb20-4a2f-96e0-9fbbe9b12a54)  
+![Image](https://github.com/user-attachments/assets/0c3f3a67-33fc-4be0-b84f-e9be0a3977af)  
+![Image](https://github.com/user-attachments/assets/122271c6-4dc2-41fa-a714-970d95c12a5a)  
+![Image](https://github.com/user-attachments/assets/9704d275-ccd8-464f-9414-1da4199c363e)  
 
 ## Table of Contents
 
