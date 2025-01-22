@@ -7,5 +7,6 @@ void handleMenuChoice(int choice);
 void pauseMenu();
 void displayReturnToMainMenu();
 void runMainMenuLoop();
+void displayReturnToGame();
 #endif
 

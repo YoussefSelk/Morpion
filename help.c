@@ -11,6 +11,6 @@ void displayHelp() {
     printf("4. Vous pouvez sauvegarder ou charger une partie en cours.\n");
     printf("Bonne chance et amusez-vous bien !\n\n");
 
-    displayReturnToMainMenu();  // Nettoyer la console avant de revenir au menus
+    displayReturnToMainMenu();  
 }
 

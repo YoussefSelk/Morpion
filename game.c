@@ -7,10 +7,6 @@
 #include <stdlib.h>
 #include "globals.h"
 
-//char grid[3][3];  
-//int currentPlayer;  
-//int gameMode;  
-//int gameModified = 0; 
 
 void initGame(int mode){
     int i, j;
@@ -23,6 +19,7 @@ void initGame(int mode){
 }
 
 void playGame() {
+	ingame = 1;
     int moves = 0;
     int winner = 0; 
     displayGrid(grid); 
@@ -42,39 +39,20 @@ void playGame() {
     }
 
     if (winner != 0) {
-        printf("Le joueur %d a gagné !\n", winner); 
-        updateStats(winner); 
-        saveStats(); // Sauvegarder les statistiques après chaque partie
-
+    	ingame = 0;
+    	game_finished = 1;
+        printf("Le joueur %d a gagne !\n", currentPlayer); 
+        updateStats(currentPlayer); 
+        saveStats(); 
+		
     } else {
+    	ingame = 0;
+    	game_finished = 1;
         printf("Match nul !\n"); 
         updateStats(0); 
     }
     gameModified = 1;
 }
-
-//void playGame() {
-//    int moves = 0;
-//    while (moves < 9 && !checkWinner()) {
-//        displayGrid(grid);  // Afficher la grille avec couleurs et nettoyage
-//        if (gameMode == 1 && currentPlayer == 2) {
-//            computerMove();  // Tour de l'ordinateur
-//        } else {
-//            playerMove(currentPlayer);  // Tour du joueur
-//        }
-//        moves++;
-//        if (!checkWinner()) {
-//            currentPlayer = (currentPlayer == 1) ? 2 : 1;  // Changer de joueur
-//        }
-//    }
-//    displayGrid(grid);  // Afficher la grille finale
-//    if (checkWinner()) {
-//        printf("Le joueur %d a gagné !\n", currentPlayer);
-//    } else {
-//        printf("Match nul !\n");
-//    }
-//    gameModified = 1;
-//}
 
 int checkWinner() {
     int i;
@@ -100,19 +78,19 @@ void exitGame() {
 
         if (response == 'O' || response == 'o') {
             saveGame(); 
-            printf("\033[0;32mPartie sauvegardée. Merci d'avoir joué !\033[0m\n");
+            printf("\033[0;32mPartie sauvegardee. Merci d'avoir joue !\033[0m\n");
         } else {
-            printf("\033[0;32mMerci d'avoir joué !\033[0m\n");
+            printf("\033[0;32mMerci d'avoir joue !\033[0m\n");
         }
     } else {
-        printf("\033[0;32mAucun changement à sauvegarder. Merci d'avoir joué !\033[0m\n");
+        printf("\033[0;32mAucun changement à sauvegarder. Merci d'avoir joue !\033[0m\n");
     }
-
+	ingame = 0;
     exit(0);
 }
 
 void pauseGame() {
-    printf("\033[0;36mJeu en pause. Appuyez sur 'p' suivie de 'Entrée' pour continuer...\033[0m\n");
+    printf("\033[0;36mJeu en pause. Appuyez sur 'p' suivie de 'Entree' pour continuer...\033[0m\n");
     char c;
     do {
         scanf(" %c", &c);  

@@ -1,6 +1,7 @@
 #include "display.h"
+#include "globals.h"  
 #include <stdio.h>
-#include <stdlib.h>  
+#include <stdlib.h>
 
 void clearConsole() {
     #ifdef _WIN32
@@ -11,24 +12,23 @@ void clearConsole() {
 }
 
 void displayGrid(char grid[3][3]) {
-    clearConsole();  
+    clearConsole();
 
     printf("\n");
-    int i,j;
+    int i, j;
     for (i = 0; i < 3; i++) {
         for (j = 0; j < 3; j++) {
-            if (grid[i][j] == 'X') {
-                printf(" \033[0;31mX\033[0m ");  
-            } else if (grid[i][j] == 'O') {
-                printf(" \033[0;34mO\033[0m ");  
+            if (grid[i][j] == player1Symbol) {
+                printf(" %s%c%s ", player1Color, grid[i][j], RESET);  
+            } else if (grid[i][j] == player2Symbol) {
+                printf(" %s%c%s ", player2Color, grid[i][j], RESET);  
             } else {
-                printf("   ");  
+                printf("   ");
             }
             if (j < 2) printf("|");
         }
-        if (i < 2) printf("\n---+---+---\n"); 
+        if (i < 2) printf("\n---+---+---\n");
     }
     printf("\n");
 }
-
 

@@ -18,8 +18,8 @@ int canWinOrBlock(char player);
 
 void updateStats(int winner); 
 void displayStats(); 
-void saveStats(); // Fonction pour sauvegarder les statistiques
-void loadStats(); // Fonction pour charger les statistiques
+void saveStats(); 
+void loadStats(); 
 
 #endif
 

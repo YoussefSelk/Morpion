@@ -3,15 +3,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "globals.h"
-//#define RED "\033[1;31m"
-//#define BLUE "\033[1;34m"
-//#define RESET "\033[0m"
 
 PlayerStats player1Stats = {0, 0, 0};
 PlayerStats player2Stats = {0, 0, 0};
-
-//extern char grid[3][3];  
-//int computerDifficulty = 1;  
+ 
 
 void setDifficulty(int difficulty) {
     computerDifficulty = difficulty;
@@ -27,7 +22,8 @@ void getRandomEmptyCell(int *row, int *col) {
 void computerMoveEasy() {
     int row, col;
     getRandomEmptyCell(&row, &col);
-    grid[row][col] = 'O'; 
+   
+  grid[row][col] = player2Symbol;
 }
 
 
@@ -36,9 +32,9 @@ void computerMoveNormal() {
     for (i = 0; i < 3; i++) {
         for (j = 0; j < 3; j++) {
             if (grid[i][j] == ' ') {
-                grid[i][j] = 'X';  
-                if (checkWinner()) {
-                    grid[i][j] = 'O';  
+                grid[i][j] = player1Symbol;  
+                if (checkWinner()) { 
+					grid[i][j] = player2Symbol;
                     return;
                 }
                 grid[i][j] = ' '; 
@@ -55,8 +51,8 @@ int canWinOrBlock(char player) {
         for (j = 0; j < 3; j++) {
             if (grid[i][j] == ' ') {
                 grid[i][j] = player;
-                if (checkWinner()) {
-                    grid[i][j] = 'O'; 
+                if (checkWinner()) { 
+                    grid[i][j] = player2Symbol;
                     return 1;
                 }
                 grid[i][j] = ' '; 
@@ -68,31 +64,49 @@ int canWinOrBlock(char player) {
 void computerMoveHard() {
     int i, j;
 
-    if (canWinOrBlock('O')) return; 
-    if (canWinOrBlock('X')) return; 
-
+	if (canWinOrBlock(player2Symbol)) return; 
+    if (canWinOrBlock(player1Symbol)) return; 
     
-    if (grid[0][0] == ' ') { grid[0][0] = 'O'; return; }
-    if (grid[0][2] == ' ') { grid[0][2] = 'O'; return; }
-    if (grid[2][0] == ' ') { grid[2][0] = 'O'; return; }
-    if (grid[2][2] == ' ') { grid[2][2] = 'O'; return; }
+	if (grid[0][0] == ' ') { grid[0][0] = player2Symbol; return; }
+	if (grid[0][2] == ' ') { grid[0][2] = player2Symbol; return; }
+	if (grid[2][0] == ' ') { grid[2][0] = player2Symbol; return; }
+	if (grid[2][2] == ' ') { grid[2][2] = player2Symbol; return; }
+	    
+	if (grid[1][1] == ' ') { grid[1][1] = player2Symbol; return; }
 
-    
-    if (grid[1][1] == ' ') { grid[1][1] = 'O'; return; }
-
-    
-    if (grid[0][1] == ' ') { grid[0][1] = 'O'; return; }
-    if (grid[1][0] == ' ') { grid[1][0] = 'O'; return; }
-    if (grid[1][2] == ' ') { grid[1][2] = 'O'; return; }
-    if (grid[2][1] == ' ') { grid[2][1] = 'O'; return; }
+    if (grid[0][1] == ' ') { grid[0][1] = player2Symbol; return; }
+    if (grid[1][0] == ' ') { grid[1][0] = player2Symbol; return; }
+    if (grid[1][2] == ' ') { grid[1][2] = player2Symbol; return; }
+    if (grid[2][1] == ' ') { grid[2][1] = player2Symbol; return; }
 
     
     computerMoveNormal();
 }
 
 
+void sleep_ms(int milliseconds) {
+    #ifdef _WIN32
+    Sleep(milliseconds);  
+    #else
+    usleep(milliseconds * 1000);  
+    #endif
+}
+
+void displayThinkingAnimation() {
+    
+    printf("\nL'ordinateur reflechit ");
+    int i;
+    for (i = 0; i < 3; i++) {
+        printf(".");
+        fflush(stdout); 
+        sleep_ms(500);  
+    }
+    printf("\n");
+}
 
 void computerMove() {
+    displayThinkingAnimation();  
+
     if (computerDifficulty == 1) {
         computerMoveEasy();
     } else if (computerDifficulty == 2) {
@@ -101,69 +115,51 @@ void computerMove() {
         computerMoveHard();
     }
 }
+
 void clearInputBuffer() {
     int c;
     while ((c = getchar()) != '\n' && c != EOF) { }
 }
 
 void playerMove(int player) {
-    int row, col;
-    char command;  
-    const char* playerColor = (player == 1) ? RED : BLUE;
+    int index, row, col;
+    char command;
+    const char* playerColor = (player == 1) ? player1Color : player2Color;
 
     while (1) {
-        printf("%sJoueur %d%s, entrez votre mouvement (ligne colonne), ou 'p' pour pauser : ", playerColor, player, RESET);
+    	printf("\n");
+        printf("%sJoueur %d%s, entrez votre mouvement (1-9), ou 'p' pour pauser : ", playerColor, player, RESET);
 
-        
-        scanf(" %c", &command);
-        if (command == 'p' || command == 'P') {
-            pauseMenu();  
-            continue;  
-        }
+        if (scanf(" %c", &command) == 1) {
+            if (command == 'p' || command == 'P') {
+                pauseMenu();
+                continue;
+            }
 
-        if (isdigit(command)) {
-            ungetc(command, stdin);  
-            if (scanf("%d %d", &row, &col) == 2) {
-                if (row >= 0 && row < 3 && col >= 0 && col < 3 && grid[row][col] == ' ') {
-                    grid[row][col] = (player == 1) ? 'X' : 'O'; 
+            if (isdigit(command) && command >= '1' && command <= '9') {
+            	
+                index = command - '1';  // Convertir le caractère en index (0-8)
+                row = 2 - (index / 3);  // Calculer la ligne (bas en haut)
+                col = index % 3;        // Calculer la colonne (gauche à droite)
+
+                if (grid[row][col] == ' ') {
+                    grid[row][col] = (player == 1) ? player1Symbol : player2Symbol;
                     gameModified = 1;
-                    break; 
+                    break;
+                } else {
+                	printf("\n");
+                    printf(RED "\nCase deja occupee. Reessayez : " RESET);
+                    printf("\n");
                 }
+            } else {
+            	printf("\n");
+                printf(RED "Entree invalide. Saisissez un chiffre entre 1 et 9. Reessayez : " RESET);
+                printf("\n");
             }
         }
-
-        
-        printf(RED "Entrée invalide. Les coordonnées doivent être entre 0 et 2 et la case non occupée. Réessayez : " RESET); 
-        clearInputBuffer();  
+        clearInputBuffer(); 
     }
 }
-
-
-
-
-//void playerMove(int player) {
-//    int row, col;
-//    
-//    // Set player color based on symbol (Player 1: X -> RED, Player 2: O -> BLUE)
-//    const char* playerColor = (player == 1) ? RED : BLUE;
-//
-//    // Print the prompt message with the player's color
-//    printf("%sJoueur %d %s, entrez votre mouvement (ligne colonne, entre 0 et 2) : ", playerColor, player, RESET);
-//    scanf("%d %d", &row, &col);
-//    
-//    // Loop until a valid move is provided
-//    while (row < 0 || row > 2 || col < 0 || col > 2 || grid[row][col] != ' ') {
-//        if (row < 0 || row > 2 || col < 0 || col > 2) {
-//            printf(RED "Les coordonnees doivent etre entre 0 et 2. Reessayez : " RESET);
-//        } else if (grid[row][col] != ' ') {
-//            printf(RED "Case deja occupee. Reessayez : " RESET);
-//        }
-//        scanf("%d %d", &row, &col);
-//    }
-//    
-//    // Set the symbol in the grid according to the player
-//    grid[row][col] = (player == 1) ? 'X' : 'O';
-//}
 
 void updateStats(int winner) {
     if (winner == 1) {
@@ -180,29 +176,30 @@ void updateStats(int winner) {
 }
 
 void displayStats() {
-    // Print a header with a border
+	clearConsole();
     printf(LINE BOLD "\n+-----------------------------------+\n" RESET);
     printf(LINE BOLD "|          Statistiques             |\n" RESET);
     printf(LINE BOLD "+-----------------------------------+\n" RESET);
     
-    // Display stats for Player 1
     printf(GREEN BOLD "Joueur 1:\n" RESET);
     printf(CYAN "Victoires : " YELLOW "%d\n" RESET, player1Stats.gamesWon);
-    printf(CYAN "Défaites  : " YELLOW "%d\n" RESET, player1Stats.gamesLost);
+    printf(CYAN "Defaites  : " YELLOW "%d\n" RESET, player1Stats.gamesLost);
     printf(CYAN "Matchs Nuls: " YELLOW "%d\n" RESET, player1Stats.gamesDrawn);
     
-    // Print a separating line
     printf(LINE "-------------------------------------\n" RESET);
     
-    // Display stats for Player 2
     printf(GREEN BOLD "Joueur 2:\n" RESET);
     printf(CYAN "Victoires : " YELLOW "%d\n" RESET, player2Stats.gamesWon);
-    printf(CYAN "Défaites  : " YELLOW "%d\n" RESET, player2Stats.gamesLost);
+    printf(CYAN "Defaites  : " YELLOW "%d\n" RESET, player2Stats.gamesLost);
     printf(CYAN "Matchs Nuls: " YELLOW "%d\n" RESET, player2Stats.gamesDrawn);
     
-    // Print a footer with a border
     printf(LINE "+-----------------------------------+\n" RESET);
-    displayReturnToMainMenu();
+    if(ingame){
+    	displayReturnToGame();
+	}else{
+		displayReturnToMainMenu();
+	}
+    
 }
 
 void saveStats() {
@@ -226,6 +223,5 @@ void loadStats() {
     fscanf(file, "%d %d %d", &player1Stats.gamesWon, &player1Stats.gamesLost, &player1Stats.gamesDrawn);
     fscanf(file, "%d %d %d", &player2Stats.gamesWon, &player2Stats.gamesLost, &player2Stats.gamesDrawn);
     fclose(file);
-    printf("Statistiques chargées.\n");
 }
 
